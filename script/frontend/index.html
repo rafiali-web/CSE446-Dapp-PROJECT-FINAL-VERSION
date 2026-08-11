@@ -1,130 +1,494 @@
-```html
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>BountyPulse</title>
+```
+<title>BountyPulse</title>
 
-    <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
+```
+
 </head>
 
 <body>
 
-    <main>
+<main>
 
-        <h1>BountyPulse</h1>
+```
+<h1>BountyPulse</h1>
 
-        <p>Decentralized Micro-Bounty & Escrow</p>
-
-        <!-- =========================
-             WALLET CONNECTION
-        ========================== -->
-
-        <section>
-
-            <h2>Wallet Connection</h2>
-
-            <button id="connectWallet">
-                Connect MetaMask
-            </button>
-
-            <p id="walletAddress">
-                Wallet not connected
-            </p>
-
-            <p id="networkStatus">
-                Network: Not connected
-            </p>
-
-        </section>
+<p>Decentralized Micro-Bounty & Escrow</p>
 
 
-        <!-- =========================
-             IPFS UPLOAD
-        ========================== -->
+<!-- =========================
+     WALLET CONNECTION
+========================== -->
 
-        <section>
+<section>
 
-            <h2>IPFS Metadata Upload</h2>
+    <h2>Wallet Connection</h2>
 
-            <p>
-                Select an image or file to upload to IPFS using Pinata.
-            </p>
+    <button id="connectWallet">
+        Connect MetaMask
+    </button>
 
-            <input
-                type="file"
-                id="fileInput"
-                accept="image/*,.txt,.pdf"
-            >
+    <p id="walletAddress">
+        Wallet not connected
+    </p>
 
-            <br><br>
+    <p id="networkStatus">
+        Network: Not connected
+    </p>
 
-            <button id="uploadFile">
-                Upload to IPFS
-            </button>
-
-            <p id="uploadStatus">
-                No file uploaded.
-            </p>
-
-            <p>
-                <strong>IPFS CID:</strong>
-            </p>
-
-            <p id="ipfsCid">
-                -
-            </p>
-
-        </section>
+</section>
 
 
-        <!-- =========================
-             BLOCKCHAIN CID
-        ========================== -->
+<!-- =========================
+     IPFS UPLOAD
+========================== -->
 
-        <section>
+<section>
 
-            <h2>Blockchain Metadata</h2>
+    <h2>IPFS Upload</h2>
 
-            <p>
-                The CID obtained from Pinata will be used as the
-                bounty metadata reference.
-            </p>
+    <p>
+        Upload a file to IPFS using Pinata.
+    </p>
 
-            <label for="bountyDetailsCid">
-                Bounty Details CID:
-            </label>
+    <input
+        type="file"
+        id="fileInput"
+        accept="image/*,.txt,.pdf"
+    >
 
-            <input
-                type="text"
-                id="bountyDetailsCid"
-                placeholder="IPFS CID will appear here"
-                readonly
-            >
+    <br><br>
 
-        </section>
+    <button id="uploadFile">
+        Upload to IPFS
+    </button>
 
-    </main>
+    <p id="uploadStatus">
+        No file uploaded.
+    </p>
+
+    <p>
+        <strong>IPFS CID:</strong>
+    </p>
+
+    <p id="ipfsCid">
+        -
+    </p>
+
+</section>
 
 
-    <!-- Ethers.js -->
+<!-- =========================
+     POST BOUNTY
+========================== -->
 
-    <script src="https://cdn.jsdelivr.net/npm/ethers@6.15.0/dist/ethers.umd.min.js"></script>
+<section>
+
+    <h2>Post a Bounty</h2>
+
+    <label for="bountyAmount">
+        Bounty Amount (ETH)
+    </label>
+
+    <br>
+
+    <input
+        type="number"
+        id="bountyAmount"
+        placeholder="Example: 1"
+        step="0.01"
+        min="0"
+    >
+
+    <br><br>
+
+    <label for="bountyDetailsCid">
+        Bounty Details CID
+    </label>
+
+    <br>
+
+    <input
+        type="text"
+        id="bountyDetailsCid"
+        placeholder="Upload a file first"
+        readonly
+    >
+
+    <br><br>
+
+    <button id="postBounty">
+        Post Bounty
+    </button>
+
+    <p id="bountyStatus">
+        No bounty posted yet.
+    </p>
+
+</section>
 
 
-    <!-- IPFS helper -->
+<!-- =========================
+     VIEW BOUNTY
+========================== -->
 
-    <script src="ipfsHelper.js"></script>
+<section>
+
+    <h2>View Bounty</h2>
+
+    <label for="viewBountyId">
+        Bounty ID
+    </label>
+
+    <br>
+
+    <input
+        type="number"
+        id="viewBountyId"
+        placeholder="Example: 1"
+        min="1"
+    >
+
+    <br><br>
+
+    <button id="getBounty">
+        Get Bounty
+    </button>
+
+    <div id="bountyInfo">
+
+        <p>
+            <strong>Bounty ID:</strong>
+            <span id="displayBountyId">-</span>
+        </p>
+
+        <p>
+            <strong>Creator:</strong>
+            <span id="displayCreator">-</span>
+        </p>
+
+        <p>
+            <strong>Reward:</strong>
+            <span id="displayReward">-</span>
+            ETH
+        </p>
+
+        <p>
+            <strong>Details CID:</strong>
+            <span id="displayDetailsCid">-</span>
+        </p>
+
+        <p>
+            <strong>Status:</strong>
+            <span id="displayStatus">-</span>
+        </p>
+
+        <p>
+            <strong>Selected Freelancer:</strong>
+            <span id="displayFreelancer">-</span>
+        </p>
+
+        <p>
+            <strong>Funded Amount:</strong>
+            <span id="displayFundedAmount">-</span>
+            ETH
+        </p>
+
+        <p>
+            <strong>Work CID:</strong>
+            <span id="displayWorkCid">-</span>
+        </p>
+
+    </div>
+
+</section>
 
 
-    <!-- Main application -->
+<!-- =========================
+     PLACE BID
+========================== -->
 
-    <script src="app.js"></script>
+<section>
+
+    <h2>Place a Bid</h2>
+
+    <label for="bidBountyId">
+        Bounty ID
+    </label>
+
+    <br>
+
+    <input
+        type="number"
+        id="bidBountyId"
+        placeholder="Example: 1"
+        min="1"
+    >
+
+    <br><br>
+
+    <label for="bidAmount">
+        Bid Amount (ETH)
+    </label>
+
+    <br>
+
+    <input
+        type="number"
+        id="bidAmount"
+        placeholder="Example: 0.8"
+        step="0.01"
+        min="0"
+    >
+
+    <br><br>
+
+    <button id="placeBid">
+        Place Bid
+    </button>
+
+    <p id="bidStatus">
+        No bid submitted.
+    </p>
+
+</section>
+
+
+<!-- =========================
+     FUND BOUNTY
+========================== -->
+
+<section>
+
+    <h2>Fund Bounty</h2>
+
+    <p>
+        The bounty creator can fund the selected freelancer.
+    </p>
+
+    <label for="fundBountyId">
+        Bounty ID
+    </label>
+
+    <br>
+
+    <input
+        type="number"
+        id="fundBountyId"
+        placeholder="Example: 1"
+        min="1"
+    >
+
+    <br><br>
+
+    <label for="fundFreelancer">
+        Freelancer Address
+    </label>
+
+    <br>
+
+    <input
+        type="text"
+        id="fundFreelancer"
+        placeholder="0x..."
+    >
+
+    <br><br>
+
+    <label for="fundAmount">
+        Funding Amount (ETH)
+    </label>
+
+    <br>
+
+    <input
+        type="number"
+        id="fundAmount"
+        placeholder="Example: 0.8"
+        step="0.01"
+        min="0"
+    >
+
+    <br><br>
+
+    <button id="fundBounty">
+        Fund Bounty
+    </button>
+
+    <p id="fundStatus">
+        Bounty not funded.
+    </p>
+
+</section>
+
+
+<!-- =========================
+     WORK SUBMISSION
+========================== -->
+
+<section>
+
+    <h2>Work Submission</h2>
+
+    <p>
+        Upload the completed work to IPFS and submit its CID
+        to the blockchain.
+    </p>
+
+    <label for="workBountyId">
+        Bounty ID
+    </label>
+
+    <br>
+
+    <input
+        type="number"
+        id="workBountyId"
+        placeholder="Example: 1"
+        min="1"
+    >
+
+    <br><br>
+
+    <input
+        type="file"
+        id="workFileInput"
+        accept="image/*,.txt,.pdf"
+    >
+
+    <br><br>
+
+    <button id="uploadWork">
+        Upload Work to IPFS
+    </button>
+
+    <p id="workUploadStatus">
+        No work uploaded.
+    </p>
+
+    <p>
+        <strong>Work CID:</strong>
+        <span id="workCid">-</span>
+    </p>
+
+    <br>
+
+    <button id="submitWork" disabled>
+        Submit Work to Blockchain
+    </button>
+
+    <p id="submitWorkStatus">
+        Work has not been submitted.
+    </p>
+
+</section>
+
+
+<!-- =========================
+     APPROVE WORK
+========================== -->
+
+<section>
+
+    <h2>Approve Work</h2>
+
+    <label for="approveBountyId">
+        Bounty ID
+    </label>
+
+    <br>
+
+    <input
+        type="number"
+        id="approveBountyId"
+        placeholder="Example: 1"
+        min="1"
+    >
+
+    <br><br>
+
+    <button id="approveWork">
+        Approve Work
+    </button>
+
+    <p id="approveStatus">
+        Work not approved.
+    </p>
+
+</section>
+
+
+<!-- =========================
+     CLAIM FUNDS
+========================== -->
+
+<section>
+
+    <h2>Claim Funds</h2>
+
+    <p>
+        The freelancer can claim available funds after
+        the bounty is approved.
+    </p>
+
+    <button id="claimFunds">
+        Claim Funds
+    </button>
+
+    <p id="claimStatus">
+        No funds claimed.
+    </p>
+
+</section>
+
+
+<!-- =========================
+     WITHDRAWABLE BALANCE
+========================== -->
+
+<section>
+
+    <h2>Withdrawable Balance</h2>
+
+    <button id="checkBalance">
+        Check My Balance
+    </button>
+
+    <p>
+        <strong>Withdrawable:</strong>
+        <span id="withdrawableBalance">-</span>
+        ETH
+    </p>
+
+</section>
+```
+
+</main>
+
+<!-- =========================
+     JAVASCRIPT
+========================== -->
+
+<!-- Ethers.js -->
+
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.15.0/dist/ethers.umd.min.js"></script>
+
+<!-- IPFS helper -->
+
+<script src="ipfsHelper.js"></script>
+
+<!-- Main application -->
+
+<script src="app.js"></script>
 
 </body>
 
 </html>
-```
